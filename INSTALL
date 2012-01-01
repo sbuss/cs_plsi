@@ -1,0 +1,102 @@
+========================
+0. Contents
+========================
+Installation Steps:
+    1. Install CSparse
+    2. Copy CS_PLSI files to your CSparse directory
+        a. Configuration files
+            i.  CSparse
+            ii. CXSparse
+        b. CS_PLSI files
+    3. Install CS_PLSI
+    4. Troubleshooting
+
+========================
+1. Install CSparse
+========================
+CS)PLSI requires Dr. Timothy Davis's CSparse library. You need to download it 
+from:
+    http://www.cise.ufl.edu/research/sparse/CSparse/CSparse.tar.gz
+
+After downloading, follow the installation instructions for CSparse before 
+trying to install CS_PLSI.
+
+
+========================
+2. Copy CS_PLSI files to you CSparse directory
+========================
+a. Configuration files
+----------------------
+  WARNING: CSparse and CXSparse have different configuration files and options.
+           Please follow the instructions for the version you are using.
+i. CSparse
+----------
+If you __have not__ modified your CSparse installation, you can just replace
+CSparse/Include/cs.h and CSparse/MATLAB/CSparse/cs_make.c with the appropriate
+files in the config/CSparse directory.
+
+If you __have__ modified your CSparse installation, then you need to insert the
+following lines at the bottom of CSparse/Include/cs.h (right above all the
+#define statements):
+
+/* cs_plsi */
+double cs_plsi(const cs *X,        const int K,          const double B, 
+               const double *pZin, const double *pWgZin, const double *pDgZin, 
+               double *pZout,      double *pWgZout,      double *pDgZout);
+
+And you need to add "cpsli" to the "cs" array (at line 49 in a fresh install)
+and to the "csm" array (at line 83 in a fresh install). For example, cs would
+look something like this:
+
+cs = { 'cs_add', 'cs_amd',...a bunch of things...,'cs_randperm','cpsli' }
+
+ii. CXSparse
+------------
+If you __have not__ modified your CXSparse installation, you can just replace
+CXSparse/Include/cs.h and CXSparse/MATLAB/CSparse/private/cs_make_helper.c with
+the appropriate files in the config/CXSparse directory.
+
+If you __have__ modified your CSparse installation, then you need to insert the
+following lines at the approriate places in CXSparse/Include/cs.h 
+
+/* cs_plsi */
+double cs_dl_plsi(const cs_dl *X,        const UF_long K,          const double B, 
+             const double *pZin, const double *pWgZin, const double *pDgZin, 
+             double *pZout,      double *pWgZout,      double *pDgZout);
+
+--- and ---
+
+#define cs_plsi CS_NAME (_plsi)
+
+Also, in CXSparse/MATLAB/CSparse/private/cs_make_helper.m you need to add 
+'cs_plsi' to the cs and csm lists.
+
+Currently, installing cs_plsi in CXSparse breaks support for complex matrices for 
+everything else. Sorry about that.
+
+b. CS_PLSI files
+------------------------
+Copy cs_plsi.c to CSparse/Source/ (or CXSparse/Source)
+Copy cs_plsi_mex.c and cs_plsi.m to CSparse/MATLAB/CSparse/ (or CXSparse/MATLAB/CSparse)
+
+========================
+3. Install CS_PLSI
+========================
+Launch MATLAB.
+
+If you never ran "cs_install" in step 1, now is the time. In MATLAB, navigate 
+to CSparse/MATLAB/ and type "cs_install". This compiles and tests CSparse and 
+may take some time. This is also going to install cs_plsi.
+
+If you did follow directions and already ran "cs_install" in step 1, navigate 
+to CSparse/MATLAB/CSparse/. Type "cs_make cs_plsi" to install cs_plsi. This may 
+fail with CXSparse. If it does, just type cs_install, it should probably fail 
+on the first try but work when it disables support for complex matrices. (sorry)
+
+========================
+4. Troubleshooting
+========================
+Q: CSparse won't compile!
+A: You might be on a 64 bit system, but CSparse was written for 32 bit systems.
+Try using CXSparse, and don't forget to also download UFconfig, because CXSparse
+has a dependency on it.

@@ -1,0 +1,19 @@
+This is some work I did as part of a research project at the end of my
+bachelors studies. There's nothing really new here, just an implementation
+of plsi for sparse matrices.
+
+My advisor for the project was Dr. Tim Davis, the creator of many of
+MATLAB's sparse matrix algorithms. My project is a small extension of his
+library and therefore obviously has a dependency on CSparse/CXSparse.
+
+I haven't touched this code in over a year, so I don't quite remember the
+details on how it all works. I've included a demo matlab script to help
+anyone get going using this code.
+
+Many thanks to Dr. Tim Davis (http://www.cise.ufl.edu/~davis/) for the
+help while writing this.
+
+You can see two matrices which I used this on here: 
+http://www.cise.ufl.edu/research/sparse/matrices/Buss/index.html
+
+Please see INSTALL for installation instructions.
