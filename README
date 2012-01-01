@@ -6,9 +6,10 @@ My advisor for the project was Dr. Tim Davis, the creator of many of
 MATLAB's sparse matrix algorithms. My project is a small extension of his
 library and therefore obviously has a dependency on CSparse/CXSparse.
 
-I haven't touched this code in over a year, so I don't quite remember the
-details on how it all works. I've included a demo matlab script to help
-anyone get going using this code.
+I haven't touched this code since early 2010, so I don't quite remember
+the details on how it all works. See cs_plsi.m for a short example on how
+to use this properly. Also see the documentation in cs_plsi.c for more 
+information.
 
 Many thanks to Dr. Tim Davis (http://www.cise.ufl.edu/~davis/) for the
 help while writing this.
